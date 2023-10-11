@@ -1,0 +1,33 @@
+{
+  "configurations" : [
+    {
+      "id" : "F869233A-2F34-4552-8FD3-099FF736463A",
+      "name" : "Test Scheme Action",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "codeCoverage" : {
+      "targets" : [
+        {
+          "containerPath" : "container:",
+          "identifier" : "FDANetwork",
+          "name" : "FDANetwork"
+        }
+      ]
+    }
+  },
+  "testTargets" : [
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "FDANetworkTests",
+        "name" : "FDANetworkTests"
+      }
+    }
+  ],
+  "version" : 1
+}
