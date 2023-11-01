@@ -8,14 +8,14 @@ import Foundation
 
 extension NetworkLogger {
     /// Log the request preparing
-    /// - Parameter model: NetworkRequestModel, the model of the request
-    func logPreparingRequest(_ model: NetworkRequestModel) {
+    /// - Parameter model: FDANetworkRequest, the model of the request
+    func logPreparingRequest(_ model: FDANetworkRequest) {
         let content = """
         [PREPARING REQUEST][NETWORK MODEL]
         - Headers: \(String(describing: model.headers))
-        - Query Params: \(String(describing: model.params))
+        - Query Params: \(String(describing: model.queryItems))
         - Body: \(String(describing: model.body))
-        - Request: \(model.request.httpRequestValue)
+        - Request: \(model.type.httpRequestValue)
         """
 
         logDb(content: content)

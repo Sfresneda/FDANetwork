@@ -22,15 +22,19 @@ public protocol NetworkExecutor {
     /// Executes a network request.
     /// - Parameter request: The request to be executed.
     /// - Returns: A NetworkResponse with the response of the request.
-    func execute<T: Decodable>(requestModel: NetworkRequestModel) async throws -> NetworkResponse<T>
+    func execute<T: Decodable>(request: FDANetworkRequest) async throws -> NetworkResponse<T>
 }
 
 
-// MARK: - NetworkEndpoint
+// MARK: - FDANetworkRequest
 
-/// NetworkEndpoint is a protocol that defines the properties that a NetworkEndpoint must implement.
-public protocol NetworkEndpoint {
-    var url: URL { get }
+/// FDANetworkRequest is a protocol that defines the properties that a FDANetworkRequest must implement.
+public protocol FDANetworkRequest {
+    var type: NetworkRequestType { get }
+    var headers: [String: String]? { get }
+    var queryItems: [String: Any]? { get }
+    var body: [String: Any]? { get }
+    var url: URL { get throws }
 }
 
 // MARK: - NetworkLogger
@@ -41,7 +45,7 @@ public protocol NetworkLogger {
 }
 
 /// NetworkLogger is a class that implements the NetworkLogger protocol.
-public enum NetworkLoggerCategory {
+public enum NetworkLoggerCategory: Equatable {
     case debug
     case info
     case `default`

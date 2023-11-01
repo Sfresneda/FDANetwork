@@ -13,7 +13,7 @@ final class NetworkLoggerMock {
 }
 
 extension NetworkLoggerMock: NetworkLogger {
-    func log(category: FDANetwork.NetworkLoggerCategory, content: String...) {
+    func log(category: NetworkLoggerCategory, content: String...) {
         let model = LogModel(category: category, content: content)
         storedLogs.append(model)
     }
