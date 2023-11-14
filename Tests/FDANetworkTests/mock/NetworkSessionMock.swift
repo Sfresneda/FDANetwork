@@ -8,7 +8,7 @@
 @testable import FDANetwork
 import Foundation
 
-struct NetworkSessionMock {
+final class NetworkSessionMock {
     var data: [String: Any]?
     var response: URLResponse?
     var error: (any APIError)?
@@ -25,7 +25,7 @@ extension NetworkSessionMock: NetworkSession {
         }
         return (data.asJson!, response)
     }
-
+    
     func upload(for request: URLRequest,
                 from bodyData: Data,
                 delegate: (URLSessionTaskDelegate)?) async throws -> (Data, URLResponse) {

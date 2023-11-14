@@ -27,45 +27,71 @@ final class NetworkRequestsExecutorTests: XCTestCase {
         logger = nil
     }
 
-    func test_execute_logAnErrorWhenTryToBuildRequest() async throws {
+    func test_execute_logAnErrorWhenTryToBuildRequest_throwsAnError() async throws {
         // Given
         let request = NetworkRequestMock(url: "💀", type: .get)
-        var model: ExampleModel?
+        var result: ExampleModel?
 
         // When
         do {
-            model = try await sut.execute(request: request)
+            result = try await sut.execute(request: request)
             XCTFail("Unexpected behavior")
         } catch {
 
             // Then
-            XCTAssertEqual(error as NSError, request.urlError)
             XCTAssertFalse(logger.storedLogs.isEmpty)
             XCTAssertEqual(logger.storedLogs.last?.category, NetworkLoggerCategory.error)
         }
-        XCTAssertNil(model)
+        XCTAssertNil(result)
     }
 
+    func test_execute_getRequest_withNilResponse_throwsANonResponseError() async throws {
+        // Given
+        let model: ExampleModel = ExampleModel(id: 123, name: "Sergio")
+        let url: URL = .init(string: "https://sergiofresneda.com")!
+        let request = NetworkRequestMock(url: url.absoluteString,
+                                         type: .get)
+        var result: ExampleModel?
+        session.response = URLResponse(url: url,
+                                       mimeType: nil,
+                                       expectedContentLength: 9,
+                                       textEncodingName: nil)
+        session.data = model.asDictionary
 
-//    func test_post_shouldThrowNoResponseError() async {
-//        // Given
-//        let request = NetworkRequestMock(url: url, type: .get)
-//
-//        session.response = HTTPURLResponse(url: try! request.url,
-//                                           statusCode: 200,
-//                                           httpVersion: nil,
-//                                           headerFields: nil)
-//        session.error = NetworkAPIError.noResponse
-//
-//        // When
-//        sut = NetworkRequestsExecutor(session: session, logger: nil)
-//
-//        do {
-//            let model: ExampleModel? = try await sut.execute(request: request)
-//            XCTAssertNil(model)
-//        } catch {
-//            // Then
-//            XCTAssertEqual(error as! NetworkAPIError, NetworkAPIError.noResponse)
-//        }
-//    }
+        // When
+        do {
+            result = try await sut.execute(request: request)
+            XCTFail("Unexpected behavior")
+        } catch {
+            // Then
+            let unwrappedError = try XCTUnwrap(error as? NetworkAPIError)
+            XCTAssertEqual(unwrappedError, NetworkAPIError.noResponse)
+        }
+        XCTAssertNil(result)
+    }
+
+    func test_execute_getRequest_withResponse_returnsModel() async throws {
+        // Given
+        let model: ExampleModel = ExampleModel(id: 123, name: "Sergio")
+        let url: URL = .init(string: "https://sergiofresneda.com")!
+        let request = NetworkRequestMock(url: url.absoluteString,
+                                         type: .get)
+        var result: ExampleModel?
+        session.response = HTTPURLResponse(url: url,
+                                           mimeType: nil,
+                                           expectedContentLength: 9,
+                                           textEncodingName: nil)
+        session.data = model.asDictionary
+
+        // When
+        do {
+            result = try await sut.execute(request: request)
+        } catch {
+            // Then
+            XCTFail("Unexpected behavior")
+        }
+        XCTAssertNotNil(result)
+        XCTAssertEqual(result, model)
+    }
+
 }

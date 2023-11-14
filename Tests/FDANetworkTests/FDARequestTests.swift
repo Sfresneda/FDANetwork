@@ -16,8 +16,6 @@ final class FDARequestTests: XCTestCase {
     let queryItems: [String: Any] = ["query1": "value1", "query2": "value2"]
     let body: [String: Any] = ["body1": "value1", "body2": "value2"]
 
-
-
     // MARK: GET
 
     func test_get_request_withoutHeadersQueryItems() throws {
@@ -35,7 +33,7 @@ final class FDARequestTests: XCTestCase {
         XCTAssertEqual(url, URL(string: baseUrl + "test/test2"))
     }
 
-    func tests_get_request_withHeaders_withoutQueryItems() throws {
+    func test_get_request_withHeaders_withoutQueryItems() throws {
         // Given
 
         // When
@@ -52,7 +50,7 @@ final class FDARequestTests: XCTestCase {
         XCTAssertEqual(request.headers, headers)
     }
 
-    func tests_get_request_withHeadersAndQueryItems() throws {
+    func test_get_request_withHeadersAndQueryItems() throws {
         // Given
 
         // When
@@ -73,7 +71,7 @@ final class FDARequestTests: XCTestCase {
 
     // MARK: POST
 
-    func tests_post_request_withoutHeadersQueryItems() throws {
+    func test_post_request_withoutHeadersQueryItems() throws {
         // Given
 
         // When
@@ -88,7 +86,7 @@ final class FDARequestTests: XCTestCase {
         XCTAssertEqual(url, URL(string: baseUrl + "test/test2"))
     }
 
-    func tests_post_request_withHeaders_withoutQueryItems() throws {
+    func test_post_request_withHeaders_withoutQueryItems() throws {
         // Given
 
         // When
@@ -105,7 +103,7 @@ final class FDARequestTests: XCTestCase {
         XCTAssertEqual(request.headers, headers)
     }
 
-    func tests_post_request_withHeadersAndQueryItems() throws {
+    func test_post_request_withHeadersAndQueryItems() throws {
         // Given
 
         // When
@@ -147,7 +145,7 @@ final class FDARequestTests: XCTestCase {
 
     // MARK: PATCH
 
-    func tests_patch_request_withoutHeadersQueryItems() throws {
+    func test_patch_request_withoutHeadersQueryItems() throws {
         // Given
 
         // When
@@ -162,7 +160,7 @@ final class FDARequestTests: XCTestCase {
         XCTAssertEqual(url, URL(string: baseUrl + "test/test2"))
     }
 
-    func tests_patch_request_withHeaders_withoutQueryItems() throws {
+    func test_patch_request_withHeaders_withoutQueryItems() throws {
         // Given
 
         // When
@@ -179,7 +177,7 @@ final class FDARequestTests: XCTestCase {
         XCTAssertEqual(request.headers, headers)
     }
 
-    func tests_patch_request_withHeadersAndQueryItems() throws {
+    func test_patch_request_withHeadersAndQueryItems() throws {
         // Given
 
         // When
@@ -221,7 +219,7 @@ final class FDARequestTests: XCTestCase {
 
     // MARK: PUT
 
-    func tests_put_request_withoutHeadersQueryItems() throws {
+    func test_put_request_withoutHeadersQueryItems() throws {
         // Given
 
         // When
@@ -236,7 +234,7 @@ final class FDARequestTests: XCTestCase {
         XCTAssertEqual(url, URL(string: baseUrl + "test/test2"))
     }
 
-    func tests_put_request_withHeaders_withoutQueryItems() throws {
+    func test_put_request_withHeaders_withoutQueryItems() throws {
         // Given
 
         // When
@@ -253,7 +251,7 @@ final class FDARequestTests: XCTestCase {
         XCTAssertEqual(request.headers, headers)
     }
 
-    func tests_put_request_withHeadersAndQueryItems() throws {
+    func test_put_request_withHeadersAndQueryItems() throws {
         // Given
 
         // When
@@ -295,7 +293,7 @@ final class FDARequestTests: XCTestCase {
 
     // MARK: DELETE
 
-    func tests_delete_request_withoutHeadersQueryItems() throws {
+    func test_delete_request_withoutHeadersQueryItems() throws {
         // Given
 
         // When
@@ -310,7 +308,7 @@ final class FDARequestTests: XCTestCase {
         XCTAssertEqual(url, URL(string: baseUrl + "test/test2"))
     }
 
-    func tests_delete_request_withHeaders_withoutQueryItems() throws {
+    func test_delete_request_withHeaders_withoutQueryItems() throws {
         // Given
 
         // When
@@ -327,7 +325,7 @@ final class FDARequestTests: XCTestCase {
         XCTAssertEqual(request.headers, headers)
     }
 
-    func tests_delete_request_withHeadersAndQueryItems() throws {
+    func test_delete_request_withHeadersAndQueryItems() throws {
         // Given
 
         // When
@@ -388,8 +386,8 @@ final class FDARequestTests: XCTestCase {
 
         // When
         let request = FDARequest
-            .get(routeComponent1, routeComponent2)
-            .baseUrl("💀💀💀")
+            .get("")
+            .baseUrl("")
 
         // Then
         XCTAssertEqual(request.type, NetworkRequestType.get)

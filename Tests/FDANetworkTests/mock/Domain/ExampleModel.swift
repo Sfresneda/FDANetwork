@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct ExampleModel: Codable {
+struct ExampleModel: Codable, Equatable {
     var id: Int
     var name: String
 }
