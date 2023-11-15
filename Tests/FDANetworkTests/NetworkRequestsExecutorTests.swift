@@ -94,4 +94,89 @@ final class NetworkRequestsExecutorTests: XCTestCase {
         XCTAssertEqual(result, model)
     }
 
+    func test_execute_getRequestWithParams_withResponse_returnsModel() async throws {
+        // Given
+        let model: ExampleModel = ExampleModel(id: 123, name: "Sergio")
+        let url: URL = .init(string: "https://sergiofresneda.com")!
+        var request = NetworkRequestMock(url: url.absoluteString,
+                                         type: .get)
+        request._queryItems = ["foo": "bar"]
+
+        var result: ExampleModel?
+        session.response = HTTPURLResponse(url: url,
+                                           mimeType: nil,
+                                           expectedContentLength: 9,
+                                           textEncodingName: nil)
+        session.data = model.asDictionary
+
+        // When
+        do {
+            result = try await sut.execute(request: request)
+        } catch {
+            // Then
+            XCTFail("Unexpected behavior")
+        }
+        XCTAssertNotNil(result)
+        XCTAssertEqual(result, model)
+    }
+
+    func test_execute_getRequestWithParamsAndHeader_withResponse_returnsModel() async throws {
+        // Given
+        let model: ExampleModel = ExampleModel(id: 123, name: "Sergio")
+        let url: URL = .init(string: "https://sergiofresneda.com")!
+        var request = NetworkRequestMock(url: url.absoluteString,
+                                         type: .get)
+        request._queryItems = ["foo": "bar"]
+        request._headers = ["foo": "bar"]
+
+        var result: ExampleModel?
+        session.response = HTTPURLResponse(url: url,
+                                           mimeType: nil,
+                                           expectedContentLength: 9,
+                                           textEncodingName: nil)
+        session.data = model.asDictionary
+
+        // When
+        do {
+            result = try await sut.execute(request: request)
+        } catch {
+            // Then
+            XCTFail("Unexpected behavior")
+        }
+        XCTAssertNotNil(result)
+        XCTAssertEqual(result, model)
+    }
+
+    func test_execute_getRequestWithParamsAndHeader_withError404Response_returnsModel() async throws {
+        // Given
+        let model: ExampleModel = ExampleModel(id: 123, name: "Sergio")
+        let url: URL = .init(string: "https://sergiofresneda.com")!
+        let statusCode: Int = 404
+        let expectedError = NetworkAPIError(statusCode: statusCode,
+                                            detail: "")
+        var request = NetworkRequestMock(url: url.absoluteString,
+                                         type: .get)
+        request._queryItems = ["foo": "bar"]
+        request._headers = ["foo": "bar"]
+
+        var result: ExampleModel?
+        session.response = HTTPURLResponse(url: url,
+                                           statusCode: statusCode,
+                                           httpVersion: nil,
+                                           headerFields: nil)
+        session.data = model.asDictionary
+
+        // When
+        do {
+            result = try await sut.execute(request: request)
+            XCTFail("Unexpected behavior")
+        } catch {
+            // Then
+            let unwrappedError = try XCTUnwrap(error as? NetworkAPIError)
+            XCTAssertEqual(expectedError, unwrappedError)
+        }
+        XCTAssertNil(result)
+    }
+
+
 }
