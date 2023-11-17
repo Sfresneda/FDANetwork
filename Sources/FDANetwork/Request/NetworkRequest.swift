@@ -40,10 +40,11 @@ extension FDARequest: FDANetworkRequest {
         get throws {
             let unwrappedBaseUrl = _baseUrl ?? ""
             let joinedPath = routeComponents.joined(separator: "/")
-            let url = URL(string: unwrappedBaseUrl + joinedPath)
+            let rawUrl = unwrappedBaseUrl + joinedPath
+            let url = URL(string: rawUrl)
 
             guard let url else {
-                throw NetworkAPIError.badUrl(url)
+                throw NetworkAPIError.badUrl(rawUrl)
             }
 
             return url

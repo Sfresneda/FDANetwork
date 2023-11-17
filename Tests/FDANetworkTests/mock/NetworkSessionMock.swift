@@ -21,7 +21,7 @@ extension NetworkSessionMock: NetworkSession {
             throw error
         }
         guard let data, let response else {
-            throw NetworkAPIError(statusCode: -5, detail: "unknown")
+            throw NetworkAPIError(statusCode: -5, rawError: "unknown")
         }
         return (data.asJson!, response)
     }
@@ -33,7 +33,7 @@ extension NetworkSessionMock: NetworkSession {
             throw error
         }
         guard let data, let response else {
-            throw NetworkAPIError(statusCode: -5, detail: "unknown")
+            throw NetworkAPIError(statusCode: -5, rawError: "unknown")
         }
         return (data.asJson!, response)
     }

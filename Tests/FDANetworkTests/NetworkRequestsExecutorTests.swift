@@ -153,7 +153,7 @@ final class NetworkRequestsExecutorTests: XCTestCase {
         let url: URL = .init(string: "https://sergiofresneda.com")!
         let statusCode: Int = 404
         let expectedError = NetworkAPIError(statusCode: statusCode,
-                                            detail: "")
+                                            rawError: "")
         var request = NetworkRequestMock(url: url.absoluteString,
                                          type: .get)
         request._queryItems = ["foo": "bar"]

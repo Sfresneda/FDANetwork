@@ -84,7 +84,7 @@ private extension NetworkRequestsExecutor {
             detail = String(data: extraData, encoding: .utf8)
         }
 
-        throw NetworkAPIError(statusCode: statusCode, detail: detail ?? "")
+        throw NetworkAPIError(statusCode: statusCode, rawError: detail)
     }
 }
 
@@ -99,7 +99,7 @@ private extension NetworkRequestsExecutor {
 
         guard var queryItems = URLComponents(string: url.absoluteString),
               let url = queryItems.url else {
-            throw NetworkAPIError.badUrl(url.absoluteURL)
+            throw NetworkAPIError.badUrl(url.absoluteString)
         }
 
         var urlRequest = URLRequest(url: url,

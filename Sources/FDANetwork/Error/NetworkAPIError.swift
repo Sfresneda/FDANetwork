@@ -7,29 +7,50 @@
 import Foundation
 
 /// Class that contains the error
-final class NetworkAPIError {
-    
+struct NetworkAPIError {
+
+    fileprivate enum DefaultError {
+        case reset
+        case noResponse
+        case badUrl(String)
+        case parseError(String)
+        
+        var statusCode: Int {
+            switch self {
+            case .reset: return 0
+            case .noResponse: return -1
+            case .badUrl: return -2
+            case .parseError: return -3
+            }
+        }
+
+        var description: Any {
+            switch self {
+            case .reset:
+                return "App needs to reset"
+            case .noResponse:
+                return "No response"
+            case .badUrl(let url):
+                return "URL can't be parsed: \(url))"
+            case .parseError(let description):
+                return description
+            }
+        }
+    }
+
     /// Status code of the error
     let statusCode: Int
 
     /// Detail of the error
-    private let errorDescription: NetworkAPIErrorDetail
-
-    /// Detail of the error
-    var localizedDescription: String {
-        errorDescription.detail
-    }
+    let rawError: Any?
 
     /// Initializer of the struct with error description model
-    init(statusCode: Int, errorDescription: NetworkAPIErrorDetail) {
+    init(statusCode: Int, rawError: Any?) {
         self.statusCode = statusCode
-        self.errorDescription = errorDescription
+        self.rawError = rawError
     }
-
-    /// Initializer of the struct with error description string
-    init(statusCode: Int, detail: String) {
-        self.statusCode = statusCode
-        self.errorDescription = NetworkAPIErrorDetail(detail: detail)
+    private init(_ error: DefaultError) {
+        self.init(statusCode: error.statusCode, rawError: error.description)
     }
 }
 
@@ -45,24 +66,24 @@ extension NetworkAPIError: Equatable {
 extension NetworkAPIError {
     /// Error that indicates that the app needs to reset
     static var reset: NetworkAPIError {
-        NetworkAPIError(statusCode: 0, detail: "App needs to reset")
+        .init(.reset)
     }
 
     /// Error that indicates that the network response has no response
     static var noResponse: NetworkAPIError {
-        NetworkAPIError(statusCode: -1, detail: "No response")
+        .init(.noResponse)
     }
 
     /// Error that indicates that the url is not valid
-    static func badUrl(_ url: URL?) -> NetworkAPIError {
-        NetworkAPIError(statusCode: -2, detail: "URL can't be parsed: \(String(describing: url))")
+    static func badUrl(_ url: String) -> NetworkAPIError {
+        .init(.badUrl(url))
     }
 
     /// Error that indicates that the response can't be parsed
     /// - Parameter description:  is the description of the error
     /// - Returns: NetworkAPIError
     static func parseError(_ description: String) -> NetworkAPIError {
-        NetworkAPIError(statusCode: -3, detail: description)
+        .init(.parseError(description))
     }
 }
 
